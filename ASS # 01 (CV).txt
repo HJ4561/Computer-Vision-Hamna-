@@ -1,0 +1,58 @@
+1- EUCLEDIAN DISTANCE  (CIRCLE)
+% Circle parameters
+Cx = 50;   % x-coordinate of the center
+Cy = 50;   % y-coordinate of the center
+Radius = 20;    % Radius of the circle
+
+A = zeros(100, 100); % Initialize a matrix with zeros
+
+% Generate the circle
+for i = 1:1:100
+    for j = 1:1:100
+        % Check if the point (i, j) satisfies the circle equation
+        if sqrt((i - Cx)^2 + (j - Cy)^2) <= Radius
+            A(i, j) = 255; % Mark points inside or on the circle
+        end
+    end
+end
+imshow(A)
+---------------------------------
+2- CITY PATH DISTANCE (DIAMOND)
+% Circle (Diamond) parameters
+Cx = 50;   % x-coordinate (column index) of the center
+Cy = 50;   % y-coordinate (row index) of the center
+Radius = 20;    % Radius of the diamond
+
+A = zeros(100, 100); % Initialize a matrix with zeros
+
+% Generate the diamond
+for i = 1:100
+    for j = 1:100
+        % Check if the point (j, i) satisfies the Manhattan distance condition
+        if abs(i - Cy) + abs(j - Cx) <= Radius
+            A(i, j) = 255; % Mark points inside or on the diamond
+        end
+    end
+end
+
+imshow(A, []) % Display the diamond
+----------------------------------
+3- CHSSBOARD DISTANCE
+% Chessboard distance parameters
+Cx = 50;   % x-coordinate (column index) of the center
+Cy = 50;   % y-coordinate (row index) of the center
+Radius = 20;    % Radius of the diamond (Chessboard distance)
+
+A = zeros(100, 100); % Initialize a matrix with zeros
+
+% Generate the diamond using Chessboard distance
+for i = 1:100
+    for j = 1:100
+        % Check if the point satisfies the Chessboard distance condition
+        if max(abs(i - Cy), abs(j - Cx)) <= Radius
+            A(i, j) = 255; % Mark points inside or on the diamond
+        end
+    end
+end
+
+imshow(A, []) % Display the diamond
