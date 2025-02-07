@@ -1,0 +1,60 @@
+-----(MIN FILTER)------
+
+% Read the input image
+inputImage = imread('m-fruits.jpg'); % Replace with your image file
+
+% Add salt-and-pepper noise to the image
+noisyImage = imnoise(inputImage, 'salt & pepper', 0.02); % 2% noise density
+
+% Check if the image is RGB (3D)
+if size(noisyImage, 3) == 3
+    % Initialize an output image
+    outputImage = zeros(size(noisyImage), 'uint8');
+    
+    % Define the size of the minimum filter
+    filterSize = 5; % Size of the filter (1D)
+    halfSize = floor(filterSize / 2);
+    
+    % Apply a custom 1D minimum filter to each channel
+    for channel = 1:size(noisyImage, 3)
+        % Get the current channel
+        channelData = noisyImage(:, :, channel);
+        
+        % Initialize the filtered channel
+        filteredChannel = channelData; % Start with the original data
+        
+        % Apply the minimum filter along the rows
+        for row = 1:size(channelData, 1)
+            for col = 1:size(channelData, 2)
+                % Define the window
+                rowStart = max(1, row - halfSize);
+                rowEnd = min(size(channelData, 1), row + halfSize);
+                
+                % Extract the window
+                window = channelData(rowStart:rowEnd, col);
+                
+                % Compute the minimum and assign it to the filtered channel
+                filteredChannel(row, col) = min(window);
+            end
+        end
+        
+        % Store the filtered channel in the output image
+        outputImage(:, :, channel) = filteredChannel;
+    end
+    
+    % Display the original, noisy, and filtered images
+    figure;
+    subplot(1, 3, 1);
+    imshow(inputImage);
+    title('Original Image');
+    
+    subplot(1, 3, 2);
+    imshow(noisyImage);
+    title('Noisy Image');
+    
+    subplot(1, 3, 3);
+    imshow(outputImage);
+    title('1D Minimum Filtered Image');
+else
+    error('Input image is not a color image (3D).');
+end

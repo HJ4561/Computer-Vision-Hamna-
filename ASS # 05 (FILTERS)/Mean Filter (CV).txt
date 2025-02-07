@@ -1,0 +1,38 @@
+-----(MEAN FILTER)-----
+
+% Read the input image
+inputImage = imread('your_image.jpg'); % Replace with your image file
+
+% Add Gaussian noise to the image
+noisyImage = imnoise(inputImage, 'gaussian', 0, 0.01); % Mean = 0, Variance = 0.01
+
+% Check if the image is RGB (3D)
+if size(noisyImage, 3) == 3
+    % Create a mean filter
+    filterSize = 3; % Size of the filter (3x3)
+    meanFilter = fspecial('average', filterSize);
+    
+    % Initialize an output image
+    outputImage = zeros(size(noisyImage), 'uint8');
+    
+    % Apply the mean filter to each channel
+    for channel = 1:size(noisyImage, 3)
+        outputImage(:, :, channel) = imfilter(noisyImage(:, :, channel), meanFilter, 'replicate');
+    end
+    
+    % Display the original, noisy, and filtered images
+    figure;
+    subplot(1, 3, 1);
+    imshow(inputImage);
+    title('Original Image');
+    
+    subplot(1, 3, 2);
+    imshow(noisyImage);
+    title('Noisy Image');
+    
+    subplot(1, 3, 3);
+    imshow(outputImage);
+    title('Mean Filtered Image');
+else
+    error('Input image is not a color image (3D).');
+end
