@@ -1,0 +1,57 @@
+Write a program which can read an image as an input and do the following automatically. Show the results of all steps.
+Find the type of image: binary, gray or RGB.
+Find the issue in image, over dark, over bright, low contrast, or normal. (Hint: can use histogram).
+Resolve the issue if any and show the final image after enhancement.
+
+----(SOLUTION)----
+
+% This code reads an image, determines its type, identifies any issues, and enhances it.
+
+% Load the image
+image_path = 'your_image_path.jpg'; % Replace with your image path
+image = imread(image_path);
+
+% Determine the image type
+if ndims(image) == 2
+  image_type = 'grayscale';
+elseif ndims(image) == 3
+  image_type = 'RGB';
+else
+  image_type = 'unknown';
+end
+
+% Analyze the image for issues using histogram
+histogram = imhist(image);
+
+% Identify the issue
+if sum(histogram(:)) == 1
+  issue = 'binary';
+elseif  length(unique(histogram)) < 50 % You can adjust this threshold
+  issue = 'low contrast'; 
+elseif mean(histogram(:)) < 50 % You can adjust this threshold
+  issue = 'over dark';
+elseif mean(histogram(:)) > 230 % You can adjust this threshold
+  issue = 'over bright';
+else
+  issue = 'normal';
+end
+
+% Enhance the image
+if issue == 'low contrast'
+  enhanced_image = imadjust(image); 
+elseif issue == 'over dark'
+  enhanced_image = imadjust(image, [0.1 0.2], [0.0 1.0]); % Adjust these values as needed
+elseif issue == 'over bright'
+  enhanced_image = imadjust(image, [0.3 0.8], [0.0 1.0]); % Adjust these values as needed
+else
+  enhanced_image = image; 
+end
+
+% Display the results
+figure;
+subplot(1,2,1); imshow(image); title('Original Image');
+subplot(1,2,2); imshow(enhanced_image); title('Enhanced Image');
+
+% Display the image type and identified issue
+disp(['Image Type: ', image_type]);
+disp(['Issue: ', issue]);
