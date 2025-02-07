@@ -1,0 +1,31 @@
+------(Intensity Transformation Exercise)-------- 
+
+Question: Identify which intensity transformation was used on liftingbody.png to create each of the four results below
+Answer:
+
+Result 1: Negative transformation
+Result 2: Log transformation
+Result 3: Gamma correction (gamma < 1)
+Result 4: Gamma correction (gamma > 1)
+
+Script:
+
+Here is the MATLAB code for these: 
+
+% Load the image
+img = imread('bird.jpg');
+
+% Apply intensity transformations
+result1 = log(1 + double(img)); % Logarithmic transformation
+result2 = imadjust(img, [0.2 0.8], [0 1]); % Linear stretching
+result3 = imadjust(img, [], [], 0.5); % Gamma correction with gamma = 0.5
+result4 = 255 - img; % Negative transformation
+
+% Display the results
+figure; 
+imshow(img); title('original');
+figure;
+subplot(2, 2, 1); imshow(result1); title('Result 1');
+subplot(2, 2, 2); imshow(result2); title('Result 2');
+subplot(2, 2, 3); imshow(result3); title('Result 3');
+subplot(2, 2, 4); imshow(result4); title('Result 4');
